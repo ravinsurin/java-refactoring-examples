@@ -3,12 +3,57 @@
  */
 package org.example;
 
+import org.example.after.CoffeeOrder;
+import org.example.after.CoffeeSize;
+
+import java.util.Comparator;
+
 public class App {
     public String getGreeting() {
-        return "Hello World!";
+        return "Hello Coffee Shop!";
     }
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+
+        System.out.println("Hello Coffee Shop!");
+
+        //compare orders
+        Comparator<CoffeeOrder> byTotalCost = Comparator.comparingDouble(CoffeeOrder::getTotalPrice);
+        //Comparator<CoffeeSize> byCoffeeSize = Comparator.comparingDouble(CoffeeSize::getPrice);
+
+        CoffeeSize mediumCoffee = CoffeeSize.MEDIUM;
+        CoffeeSize largeCoffee = CoffeeSize.LARGE;
+        CoffeeSize smallCoffee = CoffeeSize.SMALL;
+
+        CoffeeOrder order1 = new CoffeeOrder();
+        order1.addToOrder(mediumCoffee,4);
+        order1.addToOrder(largeCoffee,3);
+
+        System.out.println("Your Order Total is: " + String.format("$%.2f",order1.getTotalPrice()));
+
+        CoffeeOrder order2 = new CoffeeOrder();
+        order2.addToOrder(mediumCoffee,1);
+        order2.addToOrder(largeCoffee,1);
+
+        System.out.println("Your Order Total is: " + String.format("$%.2f",order2.getTotalPrice()));
+
+        CoffeeOrder order3 = new CoffeeOrder();
+        order3.addToOrder(smallCoffee,5);
+
+        System.out.println("Your Order Total is: " + String.format("$%.2f",order3.getTotalPrice()));
+
+        int ret = byTotalCost.compare (order1, order2);
+        if(ret > 0) {
+            System.out.println("Order1 is larger");
+        }
+        ret = byTotalCost.compare(order2, order3);
+        if (ret < 0) {
+            System.out.println("Order3 is larger");
+        }
+        if (ret == 0)System.out.println("same size orders");
+
+        //int size = byCoffeeSize.compare(CoffeeSize.MEDIUM.getPrice(), CoffeeSize.SMALL.getPrice());
+        int size = Float.compare(CoffeeSize.MEDIUM.getPrice(), CoffeeSize.SMALL.getPrice());
+        System.out.println(size);
     }
 }
